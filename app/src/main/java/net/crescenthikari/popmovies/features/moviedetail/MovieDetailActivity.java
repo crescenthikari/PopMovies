@@ -154,7 +154,6 @@ public class MovieDetailActivity extends AppCompatActivity
         }
     };
 
-
     SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM yyy", Locale.getDefault());
 
     private boolean isTitleVisible = false;
@@ -292,6 +291,7 @@ public class MovieDetailActivity extends AppCompatActivity
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+        // code from https://github.com/saulmm/CoordinatorBehaviorExample
         int maxScroll = appBarLayout.getTotalScrollRange();
         float percentage = (float) Math.abs(offset) / (float) maxScroll;
 
@@ -299,6 +299,8 @@ public class MovieDetailActivity extends AppCompatActivity
         handleToolbarTitleVisibility(percentage);
     }
 
+
+    // modified code from https://github.com/saulmm/CoordinatorBehaviorExample
     private void handleToolbarTitleVisibility(float percentage) {
         if (percentage >= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
             if (!isTitleVisible) {
@@ -329,6 +331,7 @@ public class MovieDetailActivity extends AppCompatActivity
         }
     }
 
+    // modified code from https://github.com/saulmm/CoordinatorBehaviorExample
     private void handleAlphaOnTitle(float percentage) {
         if (percentage >= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
             if (isTitleContainerVisible) {
