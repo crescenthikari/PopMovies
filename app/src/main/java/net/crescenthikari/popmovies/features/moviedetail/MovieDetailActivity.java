@@ -26,6 +26,7 @@ import net.crescenthikari.popmovies.R;
 import net.crescenthikari.popmovies.api.TmdbApiService;
 import net.crescenthikari.popmovies.api.TmdbConstant;
 import net.crescenthikari.popmovies.model.MovieDetail;
+import net.crescenthikari.popmovies.model.MoviePosterConstant;
 import net.crescenthikari.popmovies.util.AnimationUtils;
 
 import java.text.SimpleDateFormat;
@@ -180,11 +181,11 @@ public class MovieDetailActivity extends AppCompatActivity
             }
             movieRatings = getIntent().getDoubleExtra(KEY_MOVIE_RATINGS, 0);
             if (savedInstanceState == null) {
-                ViewCompat.setTransitionName(posterImageView, KEY_MOVIE_POSTER_PATH);
-                loadMoviePosterImage("w342/");
                 supportPostponeEnterTransition();
+                ViewCompat.setTransitionName(posterImageView, KEY_MOVIE_POSTER_PATH);
+                loadMoviePosterImage(MoviePosterConstant.POSTER_SIZE);
             } else {
-                loadMoviePosterImage("w342/");
+                loadMoviePosterImage(MoviePosterConstant.POSTER_SIZE);
             }
         }
 
@@ -236,7 +237,7 @@ public class MovieDetailActivity extends AppCompatActivity
     private void loadMovieBackdropImage() {
         Picasso picasso = Picasso.with(this);
         picasso.setLoggingEnabled(true);
-        picasso.load(TmdbConstant.IMAGE_BASE_URL + "w780/" + backdropPath)
+        picasso.load(TmdbConstant.IMAGE_BASE_URL + MoviePosterConstant.BACKDROP_SIZE + backdropPath)
                 .into(target);
     }
 

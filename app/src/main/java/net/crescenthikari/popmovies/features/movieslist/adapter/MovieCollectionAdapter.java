@@ -16,6 +16,7 @@ import com.squareup.picasso.Target;
 import net.crescenthikari.popmovies.R;
 import net.crescenthikari.popmovies.features.movieslist.contract.OnMovieItemClickCallback;
 import net.crescenthikari.popmovies.model.Movie;
+import net.crescenthikari.popmovies.model.MoviePosterConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,7 @@ public class MovieCollectionAdapter
         holder.titleView.setText(movie.getTitle());
         Picasso
                 .with(holder.itemView.getContext())
-                .load(IMAGE_BASE_URL + "w342/" + movie.getPosterPath())
+                .load(IMAGE_BASE_URL + MoviePosterConstant.POSTER_SIZE + movie.getPosterPath())
                 .into(holder.picassoTarget);
     }
 
