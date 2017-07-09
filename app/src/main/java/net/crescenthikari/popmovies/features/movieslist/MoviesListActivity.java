@@ -57,6 +57,8 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
     @BindView(R.id.movies_list_view)
     RecyclerView moviesListView;
 
+    GridLayoutManager moviesLayoutAdapter;
+
     private CompositeDisposable disposables = new CompositeDisposable();
     private Disposable lastDisposable;
 
@@ -118,10 +120,14 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
     }
 
     private void setupMoviesListView() {
+        moviesLayoutAdapter = new GridLayoutManager(
+                this,
+                getResources().getInteger(R.integer.grid_size)
+        );
         movieCollectionAdapter = new MovieCollectionAdapter();
         movieCollectionAdapter.setMovieItemClickCallback(this);
         moviesListView.setItemAnimator(new DefaultItemAnimator());
-        moviesListView.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.grid_size)));
+        moviesListView.setLayoutManager(moviesLayoutAdapter);
         moviesListView.setAdapter(movieCollectionAdapter);
     }
 
@@ -140,6 +146,7 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
                     currentSection = SECTION_RATING;
                     retrieveHighestRatedMovies();
                 }
+                moviesLayoutAdapter.scrollToPositionWithOffset(0, 0);
                 return true;
             }
         });
@@ -229,7 +236,6 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
                 }, new Action() {
                     @Override
                     public void run() throws Exception {
-                        // do nothing
                         hideProgress();
                         showMovieList();
                     }
