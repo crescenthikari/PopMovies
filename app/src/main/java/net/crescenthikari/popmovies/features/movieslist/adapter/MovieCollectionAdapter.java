@@ -75,10 +75,10 @@ public class MovieCollectionAdapter
     class MovieViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.movie_poster_image)
-        public ImageView posterImageView;
+        ImageView posterImageView;
 
         @BindView(R.id.movie_title)
-        public TextView titleView;
+        TextView titleView;
 
         Target picassoTarget;
 
@@ -111,20 +111,19 @@ public class MovieCollectionAdapter
             picassoTarget = new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    assert posterImageView != null;
-                    posterImageView.setImageBitmap(bitmap);
+                    setPosterBitmap(bitmap);
                     Palette.from(bitmap)
                             .generate(asyncListener);
                 }
 
                 @Override
                 public void onBitmapFailed(Drawable errorDrawable) {
-                    // do nothing
+                    setPosterDrawable(errorDrawable);
                 }
 
                 @Override
                 public void onPrepareLoad(Drawable placeHolderDrawable) {
-                    // do nothing
+                    setPosterDrawable(placeHolderDrawable);
                 }
             };
         }
@@ -134,7 +133,23 @@ public class MovieCollectionAdapter
             Picasso
                     .with(itemView.getContext())
                     .load(IMAGE_BASE_URL + POSTER_SIZE + movie.getPosterPath())
+                    .placeholder(R.drawable.ic_local_movies_blue_grey_400_48dp)
+                    .error(R.drawable.ic_local_movies_blue_grey_400_48dp)
                     .into(picassoTarget);
+        }
+
+        void setPosterDrawable(Drawable drawable) {
+            if (posterImageView != null) {
+                posterImageView.setScaleType(ImageView.ScaleType.CENTER);
+                posterImageView.setImageDrawable(drawable);
+            }
+        }
+
+        void setPosterBitmap(Bitmap bitmap) {
+            if (posterImageView != null) {
+                posterImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                posterImageView.setImageBitmap(bitmap);
+            }
         }
     }
 }
