@@ -16,7 +16,6 @@ import com.squareup.picasso.Target;
 import net.crescenthikari.popmovies.R;
 import net.crescenthikari.popmovies.features.movieslist.contract.OnMovieItemClickCallback;
 import net.crescenthikari.popmovies.model.Movie;
-import net.crescenthikari.popmovies.model.MoviePosterConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static net.crescenthikari.popmovies.api.TmdbConstant.IMAGE_BASE_URL;
+import static net.crescenthikari.popmovies.model.MoviePosterConstant.POSTER_SIZE;
 
 /**
  * Created by Muhammad Fiqri Muthohar on 6/22/17.
@@ -50,12 +50,7 @@ public class MovieCollectionAdapter
 
     @Override
     public void onBindViewHolder(MovieCollectionAdapter.MovieViewHolder holder, int pos) {
-        final Movie movie = movies.get(pos);
-        holder.titleView.setText(movie.getTitle());
-        Picasso
-                .with(holder.itemView.getContext())
-                .load(IMAGE_BASE_URL + MoviePosterConstant.POSTER_SIZE + movie.getPosterPath())
-                .into(holder.picassoTarget);
+        holder.setData(movies.get(pos));
     }
 
     @Override
@@ -132,6 +127,14 @@ public class MovieCollectionAdapter
                     // do nothing
                 }
             };
+        }
+
+        void setData(Movie movie) {
+            titleView.setText(movie.getTitle());
+            Picasso
+                    .with(itemView.getContext())
+                    .load(IMAGE_BASE_URL + POSTER_SIZE + movie.getPosterPath())
+                    .into(picassoTarget);
         }
     }
 }
