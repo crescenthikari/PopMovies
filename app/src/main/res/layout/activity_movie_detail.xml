@@ -32,7 +32,7 @@
                 <ImageView
                     android:id="@+id/movie_backdrop_image"
                     android:layout_width="match_parent"
-                    android:layout_height="320dp"
+                    android:layout_height="@dimen/backdrop_image_height"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop" />
 
@@ -60,10 +60,10 @@
                     android:layout_gravity="bottom|center_horizontal"
                     android:background="@drawable/detail_page_gradient"
                     android:orientation="vertical"
-                    android:paddingBottom="16dp"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="168dp"
-                    android:paddingTop="16dp">
+                    android:paddingBottom="@dimen/padding_vertical"
+                    android:paddingEnd="@dimen/padding_horizontal"
+                    android:paddingStart="@dimen/movie_title_wrapper_padding_start"
+                    android:paddingTop="@dimen/padding_vertical">
 
                     <TextView
                         android:id="@+id/movie_title"
@@ -72,36 +72,36 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:paddingBottom="4dp"
+                        android:paddingBottom="@dimen/detail_text_padding_vertical"
                         tools:text="Title" />
 
                     <TextView
                         android:id="@+id/movie_release_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="4dp"
-                        android:paddingTop="4dp"
+                        android:paddingBottom="@dimen/detail_text_padding_vertical"
+                        android:paddingTop="@dimen/detail_text_padding_vertical"
                         tools:text="29 January 2017" />
 
                     <TextView
                         android:id="@+id/movie_ratings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawablePadding="4dp"
+                        android:drawablePadding="@dimen/text_drawable_padding_small"
                         android:drawableStart="@drawable/ic_star_white_24dp"
                         android:drawableTint="@color/colorAccent"
                         android:gravity="center_vertical"
-                        android:paddingTop="4dp"
+                        android:paddingTop="@dimen/detail_text_padding_vertical"
                         tools:text="4.6" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/movie_poster_image"
-                    android:layout_width="136dp"
-                    android:layout_height="180dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_width="@dimen/poster_image_width"
+                    android:layout_height="@dimen/poster_image_height"
+                    android:layout_marginBottom="@dimen/poster_margin_bottom"
+                    android:layout_marginStart="@dimen/poster_margin_start"
                     android:adjustViewBounds="true" />
 
             </FrameLayout>
@@ -149,10 +149,10 @@
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
                 android:text="Tagline"
                 android:textColor="@color/colorPrimary" />
 
@@ -161,20 +161,20 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
                 tools:text="test" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
                 android:text="Duration"
                 android:textColor="@color/colorPrimary" />
 
@@ -183,20 +183,20 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
                 tools:text="test" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
                 android:text="Overview"
                 android:textColor="@color/colorPrimary" />
 
@@ -205,10 +205,10 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="4dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:paddingTop="4dp"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
                 tools:text="test" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
