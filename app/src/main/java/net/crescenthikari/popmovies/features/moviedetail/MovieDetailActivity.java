@@ -24,9 +24,7 @@ import com.squareup.picasso.Target;
 
 import net.crescenthikari.popmovies.R;
 import net.crescenthikari.popmovies.api.TmdbApiService;
-import net.crescenthikari.popmovies.api.TmdbConstant;
 import net.crescenthikari.popmovies.model.MovieDetail;
-import net.crescenthikari.popmovies.model.MoviePosterConstant;
 import net.crescenthikari.popmovies.util.AnimationUtils;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +42,10 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+
+import static net.crescenthikari.popmovies.api.TmdbConstant.IMAGE_BASE_URL;
+import static net.crescenthikari.popmovies.model.MoviePosterConstant.BACKDROP_SIZE;
+import static net.crescenthikari.popmovies.model.MoviePosterConstant.POSTER_SIZE;
 
 public class MovieDetailActivity extends AppCompatActivity
         implements AppBarLayout.OnOffsetChangedListener {
@@ -183,9 +185,9 @@ public class MovieDetailActivity extends AppCompatActivity
             if (savedInstanceState == null) {
                 supportPostponeEnterTransition();
                 ViewCompat.setTransitionName(posterImageView, KEY_MOVIE_POSTER_PATH);
-                loadMoviePosterImage(MoviePosterConstant.POSTER_SIZE);
+                loadMoviePosterImage(POSTER_SIZE);
             } else {
-                loadMoviePosterImage(MoviePosterConstant.POSTER_SIZE);
+                loadMoviePosterImage(POSTER_SIZE);
             }
         }
 
@@ -220,7 +222,7 @@ public class MovieDetailActivity extends AppCompatActivity
     private void loadMoviePosterImage(String width) {
         Picasso picasso = Picasso.with(this);
         picasso.setLoggingEnabled(true);
-        picasso.load(TmdbConstant.IMAGE_BASE_URL + width + posterPath)
+        picasso.load(IMAGE_BASE_URL + width + posterPath)
                 .into(posterImageView, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -237,7 +239,7 @@ public class MovieDetailActivity extends AppCompatActivity
     private void loadMovieBackdropImage() {
         Picasso picasso = Picasso.with(this);
         picasso.setLoggingEnabled(true);
-        picasso.load(TmdbConstant.IMAGE_BASE_URL + MoviePosterConstant.BACKDROP_SIZE + backdropPath)
+        picasso.load(IMAGE_BASE_URL + BACKDROP_SIZE + backdropPath)
                 .into(target);
     }
 
