@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static net.crescenthikari.popmovies.api.TmdbConstant.IMAGE_BASE_URL;
+import static net.crescenthikari.popmovies.model.MoviePosterConstant.BACKDROP_SIZE;
 import static net.crescenthikari.popmovies.model.MoviePosterConstant.POSTER_SIZE;
 
 /**
@@ -136,6 +137,10 @@ public class MovieCollectionAdapter
                     .placeholder(R.drawable.ic_local_movies_blue_grey_400_48dp)
                     .error(R.drawable.ic_local_movies_blue_grey_400_48dp)
                     .into(picassoTarget);
+            // prefetch movie backdrop image to improve image load time in movie detail view
+            Picasso.with(itemView.getContext())
+                    .load(IMAGE_BASE_URL + BACKDROP_SIZE + movie.getBackdropPath())
+                    .fetch();
         }
 
         void setPosterDrawable(Drawable drawable) {
