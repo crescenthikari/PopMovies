@@ -23,10 +23,10 @@
         android:gravity="center_vertical"
         android:maxLines="2"
         android:minHeight="?listPreferredItemHeightSmall"
-        android:paddingBottom="4dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
+        android:paddingBottom="@dimen/movie_title_padding_vertical"
+        android:paddingEnd="@dimen/movie_title_padding_horizontal"
+        android:paddingStart="@dimen/movie_title_padding_horizontal"
+        android:paddingTop="@dimen/movie_title_padding_vertical"
         tools:text="Title" />
 
 </LinearLayout>
