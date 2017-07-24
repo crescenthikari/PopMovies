@@ -45,7 +45,7 @@ public class TmdbApiService {
 
     private static OkHttpClient getClient() {
         if (client == null) {
-            final long cacheSize = 25 * 1024L * 1024; // 25 MB Cache
+            final long cacheSize = 100 * 1024L * 1024; // 100 MB Cache
             Cache cache = new Cache(getCacheDirectory(), cacheSize);
             final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
