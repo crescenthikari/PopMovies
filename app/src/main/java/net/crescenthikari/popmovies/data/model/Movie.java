@@ -1,4 +1,4 @@
-package net.crescenthikari.popmovies.model;
+package net.crescenthikari.popmovies.data.model;
 
 import com.google.gson.annotations.SerializedName;
 

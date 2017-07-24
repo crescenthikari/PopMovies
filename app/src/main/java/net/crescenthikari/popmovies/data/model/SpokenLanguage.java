@@ -1,14 +1,14 @@
-package net.crescenthikari.popmovies.model;
+package net.crescenthikari.popmovies.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Genre {
+public class SpokenLanguage {
 
     @SerializedName("name")
     private String name;
 
-    @SerializedName("id")
-    private int id;
+    @SerializedName("iso_639_1")
+    private String iso6391;
 
     public String getName() {
         return name;
@@ -18,20 +18,20 @@ public class Genre {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String getIso6391() {
+        return iso6391;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIso6391(String iso6391) {
+        this.iso6391 = iso6391;
     }
 
     @Override
     public String toString() {
         return
-                "GenresItem{" +
+                "SpokenLanguagesItem{" +
                         "name = '" + name + '\'' +
-                        ",id = '" + id + '\'' +
+                        ",iso_639_1 = '" + iso6391 + '\'' +
                         "}";
     }
 }

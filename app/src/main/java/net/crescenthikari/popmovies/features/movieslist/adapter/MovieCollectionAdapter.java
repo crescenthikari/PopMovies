@@ -14,8 +14,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import net.crescenthikari.popmovies.R;
+import net.crescenthikari.popmovies.data.model.Movie;
 import net.crescenthikari.popmovies.features.movieslist.contract.OnMovieItemClickCallback;
-import net.crescenthikari.popmovies.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +23,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static net.crescenthikari.popmovies.api.TmdbConstant.IMAGE_BASE_URL;
-import static net.crescenthikari.popmovies.model.MoviePosterConstant.BACKDROP_SIZE;
-import static net.crescenthikari.popmovies.model.MoviePosterConstant.POSTER_SIZE;
+import static net.crescenthikari.popmovies.data.api.TmdbConstant.IMAGE_BASE_URL;
+import static net.crescenthikari.popmovies.data.model.MoviePosterConstant.BACKDROP_SIZE;
+import static net.crescenthikari.popmovies.data.model.MoviePosterConstant.POSTER_SIZE;
 
 /**
  * Created by Muhammad Fiqri Muthohar on 6/22/17.

@@ -2,16 +2,20 @@ package net.crescenthikari.popmovies.features.moviedetail;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -23,8 +27,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import net.crescenthikari.popmovies.R;
-import net.crescenthikari.popmovies.api.TmdbApiService;
-import net.crescenthikari.popmovies.model.MovieDetail;
+import net.crescenthikari.popmovies.data.DataManager;
+import net.crescenthikari.popmovies.data.model.MovieDetail;
+import net.crescenthikari.popmovies.data.repository.MovieRepository;
 import net.crescenthikari.popmovies.util.AnimationUtils;
 
 import java.text.SimpleDateFormat;
@@ -35,17 +40,15 @@ import java.util.Locale;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.plaidapp.util.ColorUtils;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
-import static net.crescenthikari.popmovies.api.TmdbConstant.IMAGE_BASE_URL;
-import static net.crescenthikari.popmovies.model.MoviePosterConstant.BACKDROP_SIZE;
-import static net.crescenthikari.popmovies.model.MoviePosterConstant.POSTER_SIZE;
+import static net.crescenthikari.popmovies.data.api.TmdbConstant.IMAGE_BASE_URL;
+import static net.crescenthikari.popmovies.data.model.MoviePosterConstant.BACKDROP_SIZE;
+import static net.crescenthikari.popmovies.data.model.MoviePosterConstant.POSTER_SIZE;
 
 public class MovieDetailActivity extends AppCompatActivity
         implements AppBarLayout.OnOffsetChangedListener {
@@ -62,6 +65,8 @@ public class MovieDetailActivity extends AppCompatActivity
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.75f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.75f;
     private static final int ALPHA_ANIMATIONS_DURATION = 200;
+
+    private static final float SCRIM_ADJUSTMENT = 0.075f;
 
     @BindView(R.id.appbar)
     AppBarLayout appBarLayout;
@@ -119,13 +124,58 @@ public class MovieDetailActivity extends AppCompatActivity
     String movieReleaseDateString;
     Date movieReleaseDate;
     Double movieRatings;
+
+    MovieRepository movieRepository;
     CompositeDisposable disposables = new CompositeDisposable();
     Target target = new Target() {
         @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
             if (backdropImageView != null) {
                 backdropImageView.setImageBitmap(bitmap);
             }
+
+            final int twentyFourDip = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    24,
+                    MovieDetailActivity.this.getResources().getDisplayMetrics()
+            );
+            Palette.from(bitmap)
+                    .maximumColorCount(3)
+                    .clearFilters() /* by default palette ignore certain hues
+                        (e.g. pure black/white) but we don't want this. */
+                    .setRegion(0, 0, bitmap.getWidth() - 1, twentyFourDip) /* - 1 to work around
+                        https://code.google.com/p/android/issues/detail?id=191013 */
+                    .generate(new Palette.PaletteAsyncListener() {
+                        @Override
+                        public void onGenerated(Palette palette) {
+                            boolean isDark;
+                            @ColorUtils.Lightness int lightness = ColorUtils.isDark(palette);
+                            if (lightness == ColorUtils.LIGHTNESS_UNKNOWN) {
+                                isDark = ColorUtils.isDark(
+                                        bitmap,
+                                        bitmap.getWidth() / 2,
+                                        0
+                                );
+                            } else {
+                                isDark = lightness == ColorUtils.IS_DARK;
+                            }
+
+                            if (!isDark) { // make back icon dark on light images
+                                try {
+                                    toolbar.getNavigationIcon()
+                                            .setColorFilter(
+                                                    ContextCompat.getColor(
+                                                            MovieDetailActivity.this,
+                                                            R.color.dark_icon
+                                                    ),
+                                                    PorterDuff.Mode.MULTIPLY
+                                            );
+                                } catch (Exception e) {
+                                    Log.e(TAG, "onGenerated: error", e);
+                                }
+                            }
+                        }
+                    });
             Palette.from(bitmap)
                     .generate(new Palette.PaletteAsyncListener() {
                         @Override
@@ -201,6 +251,7 @@ public class MovieDetailActivity extends AppCompatActivity
         );
         ratingView.setText(String.format(Locale.getDefault(), "%.1f", movieRatings));
         toolbarTitleView.setText(movieTitle);
+        setupMovieRepository();
         loadMovieBackdropImage();
         loadMovieDetails();
     }
@@ -211,6 +262,10 @@ public class MovieDetailActivity extends AppCompatActivity
             disposables.dispose();
         }
         super.onDestroy();
+    }
+
+    private void setupMovieRepository() {
+        movieRepository = ((DataManager) getApplication()).getMovieRepository();
     }
 
     private void setToolbar() {
@@ -244,28 +299,22 @@ public class MovieDetailActivity extends AppCompatActivity
     }
 
     private void loadMovieDetails() {
-        TmdbApiService.open()
-                .getMovieDetail(movieId)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<MovieDetail>>() {
+        movieRepository.getMovieDetail(movieId)
+                .subscribe(new Observer<MovieDetail>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable disposable) {
                         disposables.add(disposable);
                     }
 
                     @Override
-                    public void onNext(@NonNull Response<MovieDetail> movieDetailResponse) {
-                        MovieDetail detail = movieDetailResponse.body();
-                        if (detail != null) {
-                            durationView.setText(String.format(
-                                    Locale.getDefault(),
-                                    "%d minute(s)",
-                                    detail.getRuntime())
-                            );
-                            taglineView.setText(TextUtils.isEmpty(detail.getTagline())
-                                    ? "-" : detail.getTagline());
-                        }
+                    public void onNext(@NonNull MovieDetail detail) {
+                        durationView.setText(String.format(
+                                Locale.getDefault(),
+                                "%d minute(s)",
+                                detail.getRuntime())
+                        );
+                        taglineView.setText(TextUtils.isEmpty(detail.getTagline())
+                                ? "-" : detail.getTagline());
                     }
 
                     @Override

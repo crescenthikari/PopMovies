@@ -2,7 +2,7 @@ package net.crescenthikari.popmovies.features.movieslist.contract;
 
 import android.widget.ImageView;
 
-import net.crescenthikari.popmovies.model.Movie;
+import net.crescenthikari.popmovies.data.model.Movie;
 
 /**
  * Created by Muhammad Fiqri Muthohar on 6/22/17.

@@ -18,23 +18,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import net.crescenthikari.popmovies.R;
-import net.crescenthikari.popmovies.api.TmdbApiService;
-import net.crescenthikari.popmovies.api.response.MovieCollectionResponse;
+import net.crescenthikari.popmovies.data.DataManager;
+import net.crescenthikari.popmovies.data.model.Movie;
+import net.crescenthikari.popmovies.data.repository.MovieRepository;
 import net.crescenthikari.popmovies.features.moviedetail.MovieDetailActivity;
 import net.crescenthikari.popmovies.features.movieslist.adapter.MovieCollectionAdapter;
 import net.crescenthikari.popmovies.features.movieslist.contract.OnMovieItemClickCallback;
-import net.crescenthikari.popmovies.model.Movie;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Response;
 
 public class MoviesListActivity extends AppCompatActivity implements OnMovieItemClickCallback {
     public static final String TAG = "MainActivity";
@@ -59,6 +58,8 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
 
     GridLayoutManager moviesLayoutAdapter;
 
+    MovieRepository movieRepository;
+
     private CompositeDisposable disposables = new CompositeDisposable();
     private Disposable lastDisposable;
 
@@ -75,16 +76,21 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
             currentSection = savedInstanceState.getInt(KEY_SECTION, SECTION_NOW_PLAYING);
         }
         setupViews();
-        retrieveMovies();
+        setupRepository();
+        getMovies();
     }
 
-    private void retrieveMovies() {
+    private void setupRepository() {
+        movieRepository = ((DataManager) getApplication()).getMovieRepository();
+    }
+
+    private void getMovies() {
         if (currentSection == SECTION_NOW_PLAYING) {
-            retrieveNowPlayingMovies();
+            getNowPlayingMovies();
         } else if (currentSection == SECTION_POPULARITY) {
-            retrievePopularMovies();
+            getMostPopularMovies();
         } else if (currentSection == SECTION_RATING) {
-            retrieveHighestRatedMovies();
+            getHighestRatedMovies();
         }
     }
 
@@ -138,13 +144,13 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
                 int id = menuItem.getItemId();
                 if (id == R.id.action_now_playing) {
                     currentSection = SECTION_NOW_PLAYING;
-                    retrieveNowPlayingMovies();
+                    getNowPlayingMovies();
                 } else if (id == R.id.action_sort_popularity) {
                     currentSection = SECTION_POPULARITY;
-                    retrievePopularMovies();
+                    getMostPopularMovies();
                 } else if (id == R.id.action_sort_ratings) {
                     currentSection = SECTION_RATING;
-                    retrieveHighestRatedMovies();
+                    getHighestRatedMovies();
                 }
                 moviesLayoutAdapter.scrollToPositionWithOffset(0, 0);
                 return true;
@@ -168,44 +174,23 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
         moviesListView.setVisibility(View.GONE);
     }
 
-    private void retrieveNowPlayingMovies() {
-        subscribeMovieCollectionResponse(getNowPlayingMovies());
+    private void getNowPlayingMovies() {
+        subscribeMovieCollectionResponse(movieRepository.getNowPlayingMovies(1));
     }
 
-    private void retrieveHighestRatedMovies() {
-        subscribeMovieCollectionResponse(getHighestRatedMovies());
+    private void getHighestRatedMovies() {
+        subscribeMovieCollectionResponse(movieRepository.getHighestRatedMovies(1));
     }
 
-    private void retrievePopularMovies() {
-        subscribeMovieCollectionResponse(getPopularMovies());
+    private void getMostPopularMovies() {
+        subscribeMovieCollectionResponse(movieRepository.getMostPopularMovies(1));
     }
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
     }
 
-    private Observable<Response<MovieCollectionResponse>> getNowPlayingMovies() {
-        return TmdbApiService.open()
-                .getNowPlayingMovies(1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private Observable<Response<MovieCollectionResponse>> getPopularMovies() {
-        return TmdbApiService.open()
-                .getMostPopularMovies(1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private Observable<Response<MovieCollectionResponse>> getHighestRatedMovies() {
-        return TmdbApiService.open()
-                .getHighestRatedMovies(1)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private void subscribeMovieCollectionResponse(Observable<Response<MovieCollectionResponse>> observable) {
+    private void subscribeMovieCollectionResponse(Observable<List<Movie>> observable) {
         hideMovieList();
         showProgress();
         if (disposables.size() == 1 && lastDisposable != null) {
@@ -213,18 +198,11 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
             disposables.remove(lastDisposable);
         }
         lastDisposable = observable
-                .subscribe(new Consumer<Response<MovieCollectionResponse>>() {
+                .subscribe(new Consumer<List<Movie>>() {
                     @Override
-                    public void accept(@io.reactivex.annotations.NonNull Response<MovieCollectionResponse> listResponse)
+                    public void accept(@io.reactivex.annotations.NonNull List<Movie> movies)
                             throws Exception {
-                        if (listResponse != null) {
-                            MovieCollectionResponse body = listResponse.body();
-                            if (body != null
-                                    && body.getMovies() != null
-                                    && !body.getMovies().isEmpty()) {
-                                movieCollectionAdapter.replaceMovieList(body.getMovies());
-                            }
-                        }
+                        movieCollectionAdapter.replaceMovieList(movies);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

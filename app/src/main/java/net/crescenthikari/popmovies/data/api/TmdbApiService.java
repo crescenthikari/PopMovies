@@ -1,4 +1,4 @@
-package net.crescenthikari.popmovies.api;
+package net.crescenthikari.popmovies.data.api;
 
 import com.google.gson.Gson;
 
@@ -18,7 +18,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static net.crescenthikari.popmovies.api.TmdbConstant.API_BASE_URL;
+import static net.crescenthikari.popmovies.data.api.TmdbConstant.API_BASE_URL;
 
 /**
  * Created by Muhammad Fiqri Muthohar on 6/21/17.

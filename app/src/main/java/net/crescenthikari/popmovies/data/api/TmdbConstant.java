@@ -1,4 +1,4 @@
-package net.crescenthikari.popmovies.api;
+package net.crescenthikari.popmovies.data.api;
 
 /**
  * Created by Muhammad Fiqri Muthohar on 6/21/17.

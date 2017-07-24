@@ -1,7 +1,7 @@
-package net.crescenthikari.popmovies.api;
+package net.crescenthikari.popmovies.data.api;
 
-import net.crescenthikari.popmovies.api.response.MovieCollectionResponse;
-import net.crescenthikari.popmovies.model.MovieDetail;
+import net.crescenthikari.popmovies.data.api.response.MovieCollectionResponse;
+import net.crescenthikari.popmovies.data.model.MovieDetail;
 
 import io.reactivex.Observable;
 import retrofit2.Response;

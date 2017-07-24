@@ -1,8 +1,8 @@
-package net.crescenthikari.popmovies.api.response;
+package net.crescenthikari.popmovies.data.api.response;
 
 import com.google.gson.annotations.SerializedName;
 
-import net.crescenthikari.popmovies.model.Movie;
+import net.crescenthikari.popmovies.data.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
