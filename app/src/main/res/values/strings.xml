@@ -6,4 +6,7 @@
     <string name="duration_subhead">Duration</string>
     <string name="tagline_subhead">Tagline</string>
     <string name="test_dummy">test</string>
+    <string name="tools_text_rating">4.6</string>
+    <string name="tools_release_date">29 January 2017</string>
+    <string name="tools_title">Title</string>
 </resources>

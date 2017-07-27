@@ -83,9 +83,6 @@ public class MovieDetailActivity extends AppCompatActivity
     @BindView(R.id.movie_backdrop_image)
     ImageView backdropImageView;
 
-    @BindView(R.id.view_backdrop_overlay)
-    View viewOverlay;
-
     @BindView(R.id.movie_title)
     TextView titleView;
 
@@ -166,7 +163,7 @@ public class MovieDetailActivity extends AppCompatActivity
                                             .setColorFilter(
                                                     ContextCompat.getColor(
                                                             MovieDetailActivity.this,
-                                                            R.color.dark_icon
+                                                            R.color.darkIconColor
                                                     ),
                                                     PorterDuff.Mode.MULTIPLY
                                             );

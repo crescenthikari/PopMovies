@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="dark_icon">#99000000</color> <!-- 60% black-->
+    <color name="darkIconColor">#99000000</color> <!-- 60% black-->
+    <color name="statusBarColor">#33000000</color>
 </resources>

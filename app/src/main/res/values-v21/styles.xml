@@ -3,6 +3,6 @@
 
     <style name="FitAppTheme" parent="Base.AppTheme">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/statusBarColor</item>
     </style>
 </resources>

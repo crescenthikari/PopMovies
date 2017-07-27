@@ -22,29 +22,16 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/movie_backdrop_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/backdrop_image_height"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/movie_backdrop_image_description"
                 android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7">
-
-                <ImageView
-                    android:id="@+id/movie_backdrop_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/backdrop_image_height"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/movie_backdrop_image_description"
-                    android:scaleType="centerCrop" />
-
-                <View
-                    android:id="@+id/view_backdrop_overlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/movie_backdrop_image"
-                    android:background="@color/colorPrimary" />
-
-            </RelativeLayout>
+                app:layout_collapseParallaxMultiplier="0.7" />
 
             <FrameLayout
                 android:id="@+id/movie_detail_frame"
@@ -74,7 +61,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:paddingBottom="@dimen/detail_text_padding_vertical"
-                        tools:text="Title" />
+                        tools:text="@string/tools_title" />
 
                     <TextView
                         android:id="@+id/movie_release_date"
@@ -82,7 +69,7 @@
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/detail_text_padding_vertical"
                         android:paddingTop="@dimen/detail_text_padding_vertical"
-                        tools:text="29 January 2017" />
+                        tools:text="@string/tools_release_date" />
 
                     <TextView
                         android:id="@+id/movie_ratings"
@@ -93,7 +80,7 @@
                         android:drawableTint="@color/colorAccent"
                         android:gravity="center_vertical"
                         android:paddingTop="@dimen/detail_text_padding_vertical"
-                        tools:text="4.6" />
+                        tools:text="@string/tools_text_rating" />
 
                 </LinearLayout>
 
