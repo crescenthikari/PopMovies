@@ -13,4 +13,6 @@
     <dimen name="text_drawable_padding_small">4dp</dimen>
     <dimen name="movie_title_padding_vertical">4dp</dimen>
     <dimen name="movie_title_padding_horizontal">16dp</dimen>
+    <dimen name="overview_line_spacing">4dp</dimen>
+    <dimen name="overview_text_size">16sp</dimen>
 </resources>

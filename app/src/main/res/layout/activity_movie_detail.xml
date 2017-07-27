@@ -34,6 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/backdrop_image_height"
                     android:adjustViewBounds="true"
+                    android:contentDescription="@string/movie_backdrop_image_description"
                     android:scaleType="centerCrop" />
 
                 <View
@@ -154,7 +155,7 @@
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="Tagline"
+                android:text="@string/tagline_subhead"
                 android:textColor="@color/colorPrimary" />
 
             <TextView
@@ -166,7 +167,7 @@
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
-                tools:text="test" />
+                tools:text="@string/test_dummy" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Subhead"
@@ -176,7 +177,7 @@
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="Duration"
+                android:text="@string/duration_subhead"
                 android:textColor="@color/colorPrimary" />
 
             <TextView
@@ -188,7 +189,7 @@
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
-                tools:text="test" />
+                tools:text="@string/test_dummy" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Subhead"
@@ -198,7 +199,7 @@
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="Overview"
+                android:text="@string/overview_subhead"
                 android:textColor="@color/colorPrimary" />
 
             <TextView
@@ -206,11 +207,14 @@
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:lineSpacingExtra="@dimen/overview_line_spacing"
+                android:lineSpacingMultiplier="1.33"
                 android:paddingBottom="@dimen/detail_text_padding_vertical"
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
-                tools:text="test" />
+                android:textSize="@dimen/overview_text_size"
+                tools:text="@string/lorem_ipsum" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

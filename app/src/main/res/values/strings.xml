@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PopMovies</string>
+    <string name="movie_backdrop_image_description">movie backdrop image</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tempus justo leo, maximus vehicula ipsum mattis eu. Sed at eleifend quam. Cras vitae consequat magna, vitae lobortis erat. Etiam in mi vitae metus mattis gravida quis cursus diam. Praesent luctus justo vel ullamcorper eleifend. Vestibulum dictum purus nec turpis facilisis, vel tincidunt ex consequat. Morbi a erat eu lacus aliquam elementum. Nam pretium mauris id lorem vehicula finibus.</string>
+    <string name="overview_subhead">Overview</string>
+    <string name="duration_subhead">Duration</string>
+    <string name="tagline_subhead">Tagline</string>
+    <string name="test_dummy">test</string>
 </resources>
