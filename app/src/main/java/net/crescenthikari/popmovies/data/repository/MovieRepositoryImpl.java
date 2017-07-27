@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class MovieRepositoryImpl implements MovieRepository {
 
-    private static final int DEFAULT_CACHE_DELAY = 250;
+    private static final int DEFAULT_CACHE_DELAY = 350;
 
     private TmdbApi tmdbApi;
     private MoviesCache moviesCache;
