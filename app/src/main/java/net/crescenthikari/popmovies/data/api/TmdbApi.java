@@ -1,6 +1,8 @@
 package net.crescenthikari.popmovies.data.api;
 
 import net.crescenthikari.popmovies.data.api.response.MovieCollectionResponse;
+import net.crescenthikari.popmovies.data.api.response.MovieReviewResponse;
+import net.crescenthikari.popmovies.data.api.response.MovieVideoResponse;
 import net.crescenthikari.popmovies.data.model.MovieDetail;
 
 import io.reactivex.Observable;
@@ -25,4 +27,10 @@ public interface TmdbApi {
 
     @GET("movie/top_rated")
     Observable<Response<MovieCollectionResponse>> getHighestRatedMovies(@Query("page") int page);
+
+    @GET("movie/{movie_id}/videos")
+    Observable<Response<MovieVideoResponse>> getMovieVideos(@Path("movie_id") String movieId);
+
+    @GET("movie/{movie_id}/reviews")
+    Observable<Response<MovieReviewResponse>> getMovieReviews(@Path("movie_id") String movieId);
 }

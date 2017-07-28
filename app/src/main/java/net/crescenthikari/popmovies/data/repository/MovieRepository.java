@@ -2,6 +2,8 @@ package net.crescenthikari.popmovies.data.repository;
 
 import net.crescenthikari.popmovies.data.model.Movie;
 import net.crescenthikari.popmovies.data.model.MovieDetail;
+import net.crescenthikari.popmovies.data.model.MovieReview;
+import net.crescenthikari.popmovies.data.model.MovieVideo;
 
 import java.util.List;
 
@@ -19,4 +21,8 @@ public interface MovieRepository {
     Observable<List<Movie>> getMostPopularMovies(int page);
 
     Observable<List<Movie>> getHighestRatedMovies(int page);
+
+    Observable<List<MovieVideo>> getMovieVideos(String movieId);
+
+    Observable<List<MovieReview>> getMovieReviews(String movieId);
 }

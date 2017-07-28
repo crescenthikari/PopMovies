@@ -2,9 +2,13 @@ package net.crescenthikari.popmovies.data.repository;
 
 import net.crescenthikari.popmovies.data.api.TmdbApi;
 import net.crescenthikari.popmovies.data.api.response.MovieCollectionResponse;
+import net.crescenthikari.popmovies.data.api.response.MovieReviewResponse;
+import net.crescenthikari.popmovies.data.api.response.MovieVideoResponse;
 import net.crescenthikari.popmovies.data.cache.MoviesCache;
 import net.crescenthikari.popmovies.data.model.Movie;
 import net.crescenthikari.popmovies.data.model.MovieDetail;
+import net.crescenthikari.popmovies.data.model.MovieReview;
+import net.crescenthikari.popmovies.data.model.MovieVideo;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -114,5 +118,34 @@ public class MovieRepositoryImpl implements MovieRepository {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<MovieVideo>> getMovieVideos(String movieId) {
+        return tmdbApi
+                .getMovieVideos(movieId)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Function<Response<MovieVideoResponse>, ObservableSource<List<MovieVideo>>>() {
+                    @Override
+                    public ObservableSource<List<MovieVideo>> apply(@NonNull Response<MovieVideoResponse> response) throws Exception {
+                        return Observable.just(response.body().getVideos());
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<MovieReview>> getMovieReviews(String movieId) {
+        return tmdbApi
+                .getMovieReviews(movieId)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Function<Response<MovieReviewResponse>, ObservableSource<List<MovieReview>>>() {
+                    @Override
+                    public ObservableSource<List<MovieReview>> apply(@NonNull Response<MovieReviewResponse> response) throws Exception {
+                        return Observable.just(response.body().getReviews());
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread());
+
     }
 }
