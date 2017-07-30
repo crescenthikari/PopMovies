@@ -9,4 +9,6 @@
     <string name="tools_text_rating">4.6</string>
     <string name="tools_release_date">29 January 2017</string>
     <string name="tools_title">Title</string>
+    <string name="videos_subhead">Videos</string>
+    <string name="reviews_subhead">Reviews</string>
 </resources>
