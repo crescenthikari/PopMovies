@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
@@ -122,6 +123,9 @@ public class MovieDetailActivity extends AppCompatActivity
 
     @BindView(R.id.reviews_rv)
     RecyclerView reviewsRv;
+
+    @BindView(R.id.movie_favorite_button)
+    FloatingActionButton favoriteFab;
 
     @BindColor(R.color.colorPrimary)
     int colorPrimary;
