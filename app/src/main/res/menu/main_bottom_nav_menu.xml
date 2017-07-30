@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_sort_popularity"
         android:enabled="true"
-        android:icon="@drawable/ic_favorite_white_24dp"
+        android:icon="@drawable/ic_format_list_numbered_white_24dp"
         android:title="Most Popular"
         app:showAsAction="ifRoom" />
     <item
@@ -18,5 +18,11 @@
         android:enabled="true"
         android:icon="@drawable/ic_star_white_24dp"
         android:title="Highest Rated"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_favorited"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:title="Favorited"
         app:showAsAction="ifRoom" />
 </menu>
