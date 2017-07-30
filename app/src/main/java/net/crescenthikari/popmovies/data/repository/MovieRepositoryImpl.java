@@ -135,9 +135,9 @@ public class MovieRepositoryImpl implements MovieRepository {
     }
 
     @Override
-    public Observable<List<MovieReview>> getMovieReviews(String movieId) {
+    public Observable<List<MovieReview>> getMovieReviews(String movieId, int page) {
         return tmdbApi
-                .getMovieReviews(movieId)
+                .getMovieReviews(movieId, page)
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Function<Response<MovieReviewResponse>, ObservableSource<List<MovieReview>>>() {
                     @Override
@@ -146,6 +146,5 @@ public class MovieRepositoryImpl implements MovieRepository {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread());
-
     }
 }

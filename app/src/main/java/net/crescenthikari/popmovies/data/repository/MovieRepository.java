@@ -24,5 +24,5 @@ public interface MovieRepository {
 
     Observable<List<MovieVideo>> getMovieVideos(String movieId);
 
-    Observable<List<MovieReview>> getMovieReviews(String movieId);
+    Observable<List<MovieReview>> getMovieReviews(String movieId, int page);
 }
