@@ -92,6 +92,10 @@ public class MovieVideo {
         this.key = key;
     }
 
+    public String getImageVideoUrl() {
+        return "https://i1.ytimg.com/vi/" + key + "/0.jpg";
+    }
+
     @Override
     public String toString() {
         return
