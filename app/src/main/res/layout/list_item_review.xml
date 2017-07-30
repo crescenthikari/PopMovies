@@ -4,10 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="8dp"
+    android:paddingBottom="4dp"
     android:paddingEnd="@dimen/padding_horizontal"
-    android:paddingStart="@dimen/padding_horizontal"
-    android:paddingTop="8dp">
+    android:paddingStart="@dimen/padding_horizontal">
 
     <TextView
         android:id="@+id/review_author"
