@@ -32,5 +32,5 @@ public interface TmdbApi {
     Observable<Response<MovieVideoResponse>> getMovieVideos(@Path("movie_id") String movieId);
 
     @GET("movie/{movie_id}/reviews")
-    Observable<Response<MovieReviewResponse>> getMovieReviews(@Path("movie_id") String movieId);
+    Observable<Response<MovieReviewResponse>> getMovieReviews(@Path("movie_id") String movieId, @Query("page") int page);
 }
