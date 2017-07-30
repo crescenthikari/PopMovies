@@ -202,6 +202,44 @@
                 android:paddingTop="@dimen/detail_text_padding_vertical"
                 android:textSize="@dimen/overview_text_size"
                 tools:text="@string/lorem_ipsum" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
+                android:text="@string/videos_subhead"
+                android:textColor="@color/colorPrimary" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/videos_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingTop="@dimen/detail_text_padding_vertical" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingEnd="@dimen/detail_content_padding_horizontal"
+                android:paddingStart="@dimen/detail_content_padding_horizontal"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
+                android:text="@string/reviews_subhead"
+                android:textColor="@color/colorPrimary" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reviews_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_text_padding_vertical"
+                android:paddingTop="@dimen/detail_text_padding_vertical"
+                tools:listitem="@android:layout/two_line_list_item" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

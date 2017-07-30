@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,6 +13,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,12 +33,18 @@ import com.squareup.picasso.Target;
 import net.crescenthikari.popmovies.R;
 import net.crescenthikari.popmovies.data.DataManager;
 import net.crescenthikari.popmovies.data.model.MovieDetail;
+import net.crescenthikari.popmovies.data.model.MovieReview;
+import net.crescenthikari.popmovies.data.model.MovieVideo;
 import net.crescenthikari.popmovies.data.repository.MovieRepository;
+import net.crescenthikari.popmovies.features.moviedetail.adapter.ReviewAdapter;
+import net.crescenthikari.popmovies.features.moviedetail.adapter.VideoAdapter;
+import net.crescenthikari.popmovies.features.moviedetail.contract.VideoOnClickCallback;
 import net.crescenthikari.popmovies.util.AnimationUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindColor;
@@ -107,6 +117,12 @@ public class MovieDetailActivity extends AppCompatActivity
     @BindView(R.id.movie_detail_frame)
     FrameLayout detailWrapperView;
 
+    @BindView(R.id.videos_rv)
+    RecyclerView videosRv;
+
+    @BindView(R.id.reviews_rv)
+    RecyclerView reviewsRv;
+
     @BindColor(R.color.colorPrimary)
     int colorPrimary;
 
@@ -121,6 +137,11 @@ public class MovieDetailActivity extends AppCompatActivity
     String movieReleaseDateString;
     Date movieReleaseDate;
     Double movieRatings;
+
+    VideoAdapter videoAdapter;
+    ReviewAdapter reviewAdapter;
+
+    VideoOnClickCallback videoOnClickCallback;
 
     MovieRepository movieRepository;
     CompositeDisposable disposables = new CompositeDisposable();
@@ -238,16 +259,9 @@ public class MovieDetailActivity extends AppCompatActivity
             }
         }
 
-        setToolbar();
-        appBarLayout.addOnOffsetChangedListener(this);
-        titleView.setText(movieTitle);
-        overviewView.setText(movieOverview);
-        releaseDateView.setText(String.format(
-                "Release date : %s",
-                dateFormat.format(movieReleaseDate))
-        );
-        ratingView.setText(String.format(Locale.getDefault(), "%.1f", movieRatings));
-        toolbarTitleView.setText(movieTitle);
+        setupToolbar();
+        setupAdapters();
+        setupViews();
         setupMovieRepository();
         loadMovieBackdropImage();
         loadMovieDetails();
@@ -261,11 +275,52 @@ public class MovieDetailActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    public void setupAdapters() {
+        videoAdapter = new VideoAdapter();
+        videoOnClickCallback = new VideoOnClickCallback() {
+            @Override
+            public void openVideo(MovieVideo video) {
+                startActivity(new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://www.youtube.com/watch?v=" + video.getKey())
+                ));
+            }
+        };
+        videoAdapter.setVideoOnClickCallback(videoOnClickCallback);
+        reviewAdapter = new ReviewAdapter();
+    }
+
+    private void setupViews() {
+        appBarLayout.addOnOffsetChangedListener(this);
+        titleView.setText(movieTitle);
+        overviewView.setText(movieOverview);
+        releaseDateView.setText(String.format(
+                "Release date : %s",
+                dateFormat.format(movieReleaseDate))
+        );
+        ratingView.setText(String.format(Locale.getDefault(), "%.1f", movieRatings));
+        toolbarTitleView.setText(movieTitle);
+        setupVideosRv();
+        setupReviewsRv();
+    }
+
+    private void setupReviewsRv() {
+        reviewsRv.setLayoutManager(new LinearLayoutManager(this));
+        reviewsRv.setItemAnimator(new DefaultItemAnimator());
+        reviewsRv.setAdapter(reviewAdapter);
+    }
+
+    private void setupVideosRv() {
+        videosRv.setLayoutManager(new LinearLayoutManager(this));
+        videosRv.setItemAnimator(new DefaultItemAnimator());
+        videosRv.setAdapter(videoAdapter);
+    }
+
     private void setupMovieRepository() {
         movieRepository = ((DataManager) getApplication()).getMovieRepository();
     }
 
-    private void setToolbar() {
+    private void setupToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
@@ -312,6 +367,51 @@ public class MovieDetailActivity extends AppCompatActivity
                         );
                         taglineView.setText(TextUtils.isEmpty(detail.getTagline())
                                 ? "-" : detail.getTagline());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        // do nothing
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // do nothing
+                    }
+                });
+        movieRepository.getMovieReviews(movieId, 1)
+                .subscribe(new Observer<List<MovieReview>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable disposable) {
+                        disposables.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<MovieReview> reviews) {
+                        reviewAdapter.clearThenAddReviews(reviews);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        // do nothing
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        // do nothing
+                    }
+                });
+
+        movieRepository.getMovieVideos(movieId)
+                .subscribe(new Observer<List<MovieVideo>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable disposable) {
+                        disposables.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull List<MovieVideo> videos) {
+                        videoAdapter.addVideos(videos);
                     }
 
                     @Override
