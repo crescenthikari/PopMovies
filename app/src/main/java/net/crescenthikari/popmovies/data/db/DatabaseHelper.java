@@ -20,12 +20,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(Movie.TABLE_CREATE_SCRIPT);
-
+        db.execSQL(Movie.CREATE_TABLE_SCRIPT);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        // do nothing
     }
 }

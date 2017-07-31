@@ -61,7 +61,7 @@ public class MovieProvider extends ContentProvider {
         if (match == MOVIES) {
             query = getFavoredMovies(projection, selection, selectionArgs, sortOrder, db);
         } else {
-            throw new UnsupportedOperationException("Unknown insert uri: " + uri);
+            throw new UnsupportedOperationException("Unknown query uri: " + uri);
         }
         query.setNotificationUri(getContext().getContentResolver(), uri);
         return query;
@@ -150,7 +150,9 @@ public class MovieProvider extends ContentProvider {
 
     private void notifyContentResolver(Uri uri) {
         try {
-            getContext().getContentResolver().notifyChange(uri, null);
+            getContext()
+                    .getContentResolver()
+                    .notifyChange(uri, null);
         } catch (NullPointerException npe) {
             Log.e(TAG, npe.getMessage());
         }

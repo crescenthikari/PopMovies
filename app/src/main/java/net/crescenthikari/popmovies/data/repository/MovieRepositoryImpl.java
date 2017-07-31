@@ -56,7 +56,7 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     private static final int DEFAULT_CACHE_DELAY = 350;
 
-    private static final String[] movieProjection = new String[]{
+    private static final String[] movieColumnProjection = new String[]{
             COLUMN_MOVIE_ID,
             COLUMN_MOVIE_TITLE,
             COLUMN_MOVIE_OVERVIEW,
@@ -206,7 +206,7 @@ public class MovieRepositoryImpl implements MovieRepository {
                         List<Movie> movies = new ArrayList<>();
                         final Cursor query = contentResolver.query(
                                 CONTENT_URI,
-                                movieProjection,
+                                movieColumnProjection,
                                 null,
                                 null,
                                 null
@@ -268,18 +268,19 @@ public class MovieRepositoryImpl implements MovieRepository {
                 final String[] args = new String[]{String.valueOf(movieId)};
                 final Cursor cursor = contentResolver.query(
                         CONTENT_URI,
-                        movieProjection,
+                        movieColumnProjection,
                         where,
                         args,
                         null
                 );
                 if (cursor != null && cursor.getCount() >= 1) {
-                    Log.d(TAG, "getFavoriteMovie: cursor count " + cursor.getCount());
                     cursor.moveToFirst();
                     final Movie resultMovie = MovieContract.fromCursor(cursor);
                     singleEmitter.onSuccess(resultMovie);
                 } else {
-                    singleEmitter.onError(new Throwable("No movies"));
+                    singleEmitter.onError(
+                            new Throwable("No movies match for that movieId: " + movieId)
+                    );
                 }
             }
         });

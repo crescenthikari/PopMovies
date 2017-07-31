@@ -250,38 +250,11 @@ public class MovieDetailActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         if (getIntent() != null) {
-            movieId = getIntent().getStringExtra(KEY_MOVIE_ID);
-            movieTitle = getIntent().getStringExtra(KEY_MOVIE_TITLE);
-            posterPath = getIntent().getStringExtra(KEY_MOVIE_POSTER_PATH);
-            backdropPath = getIntent().getStringExtra(KEY_MOVIE_BACKDROP_PATH);
-            movieOverview = getIntent().getStringExtra(KEY_MOVIE_OVERVIEW);
-            movieReleaseDateString = getIntent().getStringExtra(KEY_MOVIE_RELEASE_DATE);
-            movieVoteCount = getIntent().getIntExtra(KEY_MOVIE_VOTE_COUNT, 0);
-            isFavoriteMovie = getIntent().getBooleanExtra(KEY_MOVIE_FAVORITE, false);
-            try {
-                movieReleaseDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                        .parse(movieReleaseDateString);
-            } catch (Exception e) {
-                movieReleaseDate = Calendar.getInstance().getTime();
-            }
-            movieRatings = getIntent().getDoubleExtra(KEY_MOVIE_RATINGS, 0);
+            setupMovieDataFromIntent();
             if (savedInstanceState == null) {
-                supportPostponeEnterTransition();
-                ViewCompat.setTransitionName(posterImageView, KEY_MOVIE_POSTER_PATH);
-                loadMoviePosterImage(POSTER_SIZE);
-            } else {
-                loadMoviePosterImage(POSTER_SIZE);
+                setupActivityTransition();
             }
-            movie = new Movie();
-            movie.setId(Integer.parseInt(movieId));
-            movie.setTitle(movieTitle);
-            movie.setPosterPath(posterPath);
-            movie.setBackdropPath(backdropPath);
-            movie.setOverview(movieOverview);
-            movie.setReleaseDate(movieReleaseDateString);
-            movie.setFavoriteMovie(isFavoriteMovie);
-            movie.setVoteAverage(movieRatings);
-            movie.setVoteCount(movieVoteCount);
+            loadMoviePosterImage(POSTER_SIZE);
         }
 
         setupToolbar();
@@ -290,6 +263,43 @@ public class MovieDetailActivity extends AppCompatActivity
         setupMovieRepository();
         loadMovieBackdropImage();
         loadMovieDetails();
+    }
+
+    private void setupActivityTransition() {
+        supportPostponeEnterTransition();
+        ViewCompat.setTransitionName(posterImageView, KEY_MOVIE_POSTER_PATH);
+    }
+
+    private void setupMovieDataFromIntent() {
+        movieId = getIntent().getStringExtra(KEY_MOVIE_ID);
+        movieTitle = getIntent().getStringExtra(KEY_MOVIE_TITLE);
+        posterPath = getIntent().getStringExtra(KEY_MOVIE_POSTER_PATH);
+        backdropPath = getIntent().getStringExtra(KEY_MOVIE_BACKDROP_PATH);
+        movieOverview = getIntent().getStringExtra(KEY_MOVIE_OVERVIEW);
+        movieReleaseDateString = getIntent().getStringExtra(KEY_MOVIE_RELEASE_DATE);
+        movieVoteCount = getIntent().getIntExtra(KEY_MOVIE_VOTE_COUNT, 0);
+        isFavoriteMovie = getIntent().getBooleanExtra(KEY_MOVIE_FAVORITE, false);
+        try {
+            movieReleaseDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                    .parse(movieReleaseDateString);
+        } catch (Exception e) {
+            movieReleaseDate = Calendar.getInstance().getTime();
+        }
+        movieRatings = getIntent().getDoubleExtra(KEY_MOVIE_RATINGS, 0);
+        setupMovieData();
+    }
+
+    private void setupMovieData() {
+        movie = new Movie();
+        movie.setId(Integer.parseInt(movieId));
+        movie.setTitle(movieTitle);
+        movie.setPosterPath(posterPath);
+        movie.setBackdropPath(backdropPath);
+        movie.setOverview(movieOverview);
+        movie.setReleaseDate(movieReleaseDateString);
+        movie.setFavoriteMovie(isFavoriteMovie);
+        movie.setVoteAverage(movieRatings);
+        movie.setVoteCount(movieVoteCount);
     }
 
     @Override

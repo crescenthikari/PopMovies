@@ -18,7 +18,7 @@ public class Movie implements BaseColumns {
     public static final String COLUMN_MOVIE_POSTER_PATH = "movie_poster_path";
     public static final String COLUMN_MOVIE_BACKDROP_PATH = "movie_backdrop_path";
 
-    public static final String TABLE_CREATE_SCRIPT = "CREATE TABLE " + TABLE_NAME + "("
+    public static final String CREATE_TABLE_SCRIPT = "CREATE TABLE " + TABLE_NAME + "("
             + BaseColumns._ID + " INTEGER NOT NULL PRIMARY KEY,"
             + Movie.COLUMN_MOVIE_ID + " TEXT NOT NULL,"
             + Movie.COLUMN_MOVIE_TITLE + " TEXT NOT NULL,"
