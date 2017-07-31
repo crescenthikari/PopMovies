@@ -135,15 +135,8 @@
 
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/detail_text_padding_vertical"
-                android:paddingEnd="@dimen/detail_content_padding_horizontal"
-                android:paddingStart="@dimen/detail_content_padding_horizontal"
-                android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="@string/tagline_subhead"
-                android:textColor="@color/colorPrimary" />
+                style="@style/DetailSectionTitle"
+                android:text="@string/tagline_subhead" />
 
             <TextView
                 android:id="@+id/movie_tagline"
@@ -154,18 +147,12 @@
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
+                android:textSize="@dimen/overview_text_size"
                 tools:text="@string/test_dummy" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/detail_text_padding_vertical"
-                android:paddingEnd="@dimen/detail_content_padding_horizontal"
-                android:paddingStart="@dimen/detail_content_padding_horizontal"
-                android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="@string/duration_subhead"
-                android:textColor="@color/colorPrimary" />
+                style="@style/DetailSectionTitle"
+                android:text="@string/duration_subhead" />
 
             <TextView
                 android:id="@+id/movie_duration"
@@ -176,18 +163,12 @@
                 android:paddingEnd="@dimen/detail_content_padding_horizontal"
                 android:paddingStart="@dimen/detail_content_padding_horizontal"
                 android:paddingTop="@dimen/detail_text_padding_vertical"
+                android:textSize="@dimen/overview_text_size"
                 tools:text="@string/test_dummy" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/detail_text_padding_vertical"
-                android:paddingEnd="@dimen/detail_content_padding_horizontal"
-                android:paddingStart="@dimen/detail_content_padding_horizontal"
-                android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="@string/overview_subhead"
-                android:textColor="@color/colorPrimary" />
+                style="@style/DetailSectionTitle"
+                android:text="@string/overview_subhead" />
 
             <TextView
                 android:id="@+id/movie_overview"
@@ -204,15 +185,8 @@
                 tools:text="@string/lorem_ipsum" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/detail_text_padding_vertical"
-                android:paddingEnd="@dimen/detail_content_padding_horizontal"
-                android:paddingStart="@dimen/detail_content_padding_horizontal"
-                android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="@string/videos_subhead"
-                android:textColor="@color/colorPrimary" />
+                style="@style/DetailSectionTitle"
+                android:text="@string/videos_subhead" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/videos_rv"
@@ -222,15 +196,8 @@
                 android:paddingTop="@dimen/detail_text_padding_vertical" />
 
             <TextView
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/detail_text_padding_vertical"
-                android:paddingEnd="@dimen/detail_content_padding_horizontal"
-                android:paddingStart="@dimen/detail_content_padding_horizontal"
-                android:paddingTop="@dimen/detail_text_padding_vertical"
-                android:text="@string/reviews_subhead"
-                android:textColor="@color/colorPrimary" />
+                style="@style/DetailSectionTitle"
+                android:text="@string/reviews_subhead" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/reviews_rv"
