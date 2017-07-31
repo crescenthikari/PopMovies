@@ -41,6 +41,7 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
     public static final int SECTION_NOW_PLAYING = 0;
     public static final int SECTION_POPULARITY = 1;
     public static final int SECTION_RATING = 2;
+    public static final int SECTION_FAVORITE = 3;
 
     public static final String KEY_SECTION = "KEY_SECTION";
 
@@ -80,6 +81,15 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
         getMovies();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // reload favorite movie section on resume
+        if (currentSection == SECTION_FAVORITE) {
+            getFavoriteMovies();
+        }
+    }
+
     private void setupRepository() {
         movieRepository = ((DataManager) getApplication()).getMovieRepository();
     }
@@ -91,6 +101,8 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
             getMostPopularMovies();
         } else if (currentSection == SECTION_RATING) {
             getHighestRatedMovies();
+        } else if (currentSection == SECTION_FAVORITE) {
+            getFavoriteMovies();
         }
     }
 
@@ -151,6 +163,9 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
                 } else if (id == R.id.action_sort_ratings) {
                     currentSection = SECTION_RATING;
                     getHighestRatedMovies();
+                } else if (id == R.id.action_favorited) {
+                    currentSection = SECTION_FAVORITE;
+                    getFavoriteMovies();
                 }
                 moviesLayoutAdapter.scrollToPositionWithOffset(0, 0);
                 return true;
@@ -184,6 +199,10 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
 
     private void getMostPopularMovies() {
         subscribeMovieCollectionResponse(movieRepository.getMostPopularMovies(1));
+    }
+
+    private void getFavoriteMovies() {
+        subscribeMovieCollectionResponse(movieRepository.getFavoriteMovies());
     }
 
     private void setupToolbar() {
@@ -237,9 +256,11 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
         detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_TITLE, movie.getTitle());
         detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_RELEASE_DATE, movie.getReleaseDate());
         detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_RATINGS, movie.getVoteAverage());
+        detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_VOTE_COUNT, movie.getVoteCount());
         detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_POSTER_PATH, movie.getPosterPath());
         detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_BACKDROP_PATH, movie.getBackdropPath());
         detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_OVERVIEW, movie.getOverview());
+        detailIntent.putExtra(MovieDetailActivity.KEY_MOVIE_FAVORITE, movie.isFavoriteMovie());
         ActivityCompat.startActivity(this, detailIntent, options.toBundle());
     }
 }

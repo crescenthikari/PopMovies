@@ -33,6 +33,12 @@
             android:name=".features.moviedetail.MovieDetailActivity"
             android:parentActivityName=".features.movieslist.MoviesListActivity"
             android:theme="@style/FitAppTheme" />
+
+        <provider
+            android:name=".data.provider.MovieProvider"
+            android:authorities="net.crescenthikari.popmovies"
+            android:exported="false"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

@@ -51,6 +51,8 @@ public class Movie {
     @SerializedName("vote_count")
     private int voteCount;
 
+    private boolean isFavoriteMovie = false;
+
     public String getOverview() {
         return overview;
     }
@@ -161,6 +163,14 @@ public class Movie {
 
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public boolean isFavoriteMovie() {
+        return isFavoriteMovie;
+    }
+
+    public void setFavoriteMovie(boolean favorite) {
+        isFavoriteMovie = favorite;
     }
 }
 

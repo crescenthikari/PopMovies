@@ -33,6 +33,7 @@ import com.squareup.picasso.Target;
 
 import net.crescenthikari.popmovies.R;
 import net.crescenthikari.popmovies.data.DataManager;
+import net.crescenthikari.popmovies.data.model.Movie;
 import net.crescenthikari.popmovies.data.model.MovieDetail;
 import net.crescenthikari.popmovies.data.model.MovieReview;
 import net.crescenthikari.popmovies.data.model.MovieVideo;
@@ -56,6 +57,8 @@ import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 
 import static net.crescenthikari.popmovies.data.api.TmdbConstant.IMAGE_BASE_URL;
 import static net.crescenthikari.popmovies.data.model.MoviePosterConstant.BACKDROP_SIZE;
@@ -72,6 +75,8 @@ public class MovieDetailActivity extends AppCompatActivity
     public static final String KEY_MOVIE_POSTER_PATH = "MOVIE_POSTER_PATH";
     public static final String KEY_MOVIE_BACKDROP_PATH = "MOVIE_BACKDROP_PATH";
     public static final String KEY_MOVIE_OVERVIEW = "MOVIE_OVERVIEW";
+    public static final String KEY_MOVIE_VOTE_COUNT = "MOVIE_VOTE_COUNT";
+    public static final String KEY_MOVIE_FAVORITE = "MOVIE_FAVORITE";
 
     private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.75f;
     private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.75f;
@@ -141,6 +146,10 @@ public class MovieDetailActivity extends AppCompatActivity
     String movieReleaseDateString;
     Date movieReleaseDate;
     Double movieRatings;
+    int movieVoteCount;
+    boolean isFavoriteMovie = false;
+
+    Movie movie;
 
     VideoAdapter videoAdapter;
     ReviewAdapter reviewAdapter;
@@ -247,6 +256,8 @@ public class MovieDetailActivity extends AppCompatActivity
             backdropPath = getIntent().getStringExtra(KEY_MOVIE_BACKDROP_PATH);
             movieOverview = getIntent().getStringExtra(KEY_MOVIE_OVERVIEW);
             movieReleaseDateString = getIntent().getStringExtra(KEY_MOVIE_RELEASE_DATE);
+            movieVoteCount = getIntent().getIntExtra(KEY_MOVIE_VOTE_COUNT, 0);
+            isFavoriteMovie = getIntent().getBooleanExtra(KEY_MOVIE_FAVORITE, false);
             try {
                 movieReleaseDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US)
                         .parse(movieReleaseDateString);
@@ -261,6 +272,16 @@ public class MovieDetailActivity extends AppCompatActivity
             } else {
                 loadMoviePosterImage(POSTER_SIZE);
             }
+            movie = new Movie();
+            movie.setId(Integer.parseInt(movieId));
+            movie.setTitle(movieTitle);
+            movie.setPosterPath(posterPath);
+            movie.setBackdropPath(backdropPath);
+            movie.setOverview(movieOverview);
+            movie.setReleaseDate(movieReleaseDateString);
+            movie.setFavoriteMovie(isFavoriteMovie);
+            movie.setVoteAverage(movieRatings);
+            movie.setVoteCount(movieVoteCount);
         }
 
         setupToolbar();
@@ -306,6 +327,70 @@ public class MovieDetailActivity extends AppCompatActivity
         toolbarTitleView.setText(movieTitle);
         setupVideosRv();
         setupReviewsRv();
+        setupFavoriteFab();
+    }
+
+    private void setupFavoriteFab() {
+        if (isFavoriteMovie) {
+            showFavoriteIcon();
+        }
+
+        favoriteFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isFavoriteMovie) {
+                    addToFavorite();
+                } else {
+                    removeFromFavorite();
+                }
+                isFavoriteMovie = !isFavoriteMovie;
+            }
+        });
+    }
+
+    private void removeFromFavorite() {
+        movieRepository
+                .removeFavoriteMovie(movieId)
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        showFavoriteBorderIcon();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        Log.d(TAG, "onError: " + throwable.getMessage());
+                    }
+                });
+    }
+
+    private void addToFavorite() {
+        movie.setFavoriteMovie(!isFavoriteMovie);
+        movieRepository
+                .addFavoriteMovie(movie)
+                .subscribe(new DisposableCompletableObserver() {
+                    @Override
+                    public void onComplete() {
+                        showFavoriteIcon();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        Log.d(TAG, "onError: " + throwable.getMessage());
+                    }
+                });
+    }
+
+    private void showFavoriteIcon() {
+        favoriteFab.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_24dp)
+        );
+    }
+
+    private void showFavoriteBorderIcon() {
+        favoriteFab.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_favorite_border_white_24dp)
+        );
     }
 
     private void setupReviewsRv() {
@@ -355,6 +440,19 @@ public class MovieDetailActivity extends AppCompatActivity
     }
 
     private void loadMovieDetails() {
+        movieRepository.getFavoriteMovie(movieId)
+                .subscribe(new DisposableSingleObserver<Movie>() {
+                    @Override
+                    public void onSuccess(@NonNull Movie movie) {
+                        MovieDetailActivity.this.movie = movie;
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable throwable) {
+                        // do nothing
+                    }
+                });
+
         movieRepository.getMovieDetail(movieId)
                 .subscribe(new Observer<MovieDetail>() {
                     @Override

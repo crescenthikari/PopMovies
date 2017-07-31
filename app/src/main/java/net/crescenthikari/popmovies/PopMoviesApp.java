@@ -48,7 +48,8 @@ public class PopMoviesApp extends Application
         if (movieRepository == null) {
             movieRepository = new MovieRepositoryImpl(
                     TmdbApiService.open(),
-                    new MoviesCacheImpl()
+                    new MoviesCacheImpl(),
+                    getContentResolver()
             );
         }
         return movieRepository;
