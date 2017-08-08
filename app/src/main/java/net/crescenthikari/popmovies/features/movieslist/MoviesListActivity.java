@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import net.crescenthikari.popmovies.R;
-import net.crescenthikari.popmovies.data.DataManager;
 import net.crescenthikari.popmovies.data.model.Movie;
 import net.crescenthikari.popmovies.data.repository.MovieRepository;
 import net.crescenthikari.popmovies.features.moviedetail.MovieDetailActivity;
@@ -27,8 +26,11 @@ import net.crescenthikari.popmovies.features.movieslist.contract.OnMovieItemClic
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -59,6 +61,7 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
 
     GridLayoutManager moviesLayoutAdapter;
 
+    @Inject
     MovieRepository movieRepository;
 
     private CompositeDisposable disposables = new CompositeDisposable();
@@ -70,6 +73,7 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movies_list);
         ButterKnife.bind(this);
@@ -77,7 +81,6 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
             currentSection = savedInstanceState.getInt(KEY_SECTION, SECTION_NOW_PLAYING);
         }
         setupViews();
-        setupRepository();
         getMovies();
     }
 
@@ -88,10 +91,6 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
         if (currentSection == SECTION_FAVORITE) {
             getFavoriteMovies();
         }
-    }
-
-    private void setupRepository() {
-        movieRepository = ((DataManager) getApplication()).getMovieRepository();
     }
 
     private void getMovies() {

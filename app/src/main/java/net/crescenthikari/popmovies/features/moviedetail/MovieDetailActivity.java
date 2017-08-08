@@ -32,7 +32,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import net.crescenthikari.popmovies.R;
-import net.crescenthikari.popmovies.data.DataManager;
 import net.crescenthikari.popmovies.data.model.Movie;
 import net.crescenthikari.popmovies.data.model.MovieDetail;
 import net.crescenthikari.popmovies.data.model.MovieReview;
@@ -49,9 +48,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 import io.plaidapp.util.ColorUtils;
 import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
@@ -156,6 +158,7 @@ public class MovieDetailActivity extends AppCompatActivity
 
     VideoOnClickCallback videoOnClickCallback;
 
+    @Inject
     MovieRepository movieRepository;
     CompositeDisposable disposables = new CompositeDisposable();
     Target target = new Target() {
@@ -245,6 +248,7 @@ public class MovieDetailActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
         ButterKnife.bind(this);
@@ -260,7 +264,6 @@ public class MovieDetailActivity extends AppCompatActivity
         setupToolbar();
         setupAdapters();
         setupViews();
-        setupMovieRepository();
         loadMovieBackdropImage();
         loadMovieDetails();
     }
@@ -413,10 +416,6 @@ public class MovieDetailActivity extends AppCompatActivity
         videosRv.setLayoutManager(new LinearLayoutManager(this));
         videosRv.setItemAnimator(new DefaultItemAnimator());
         videosRv.setAdapter(videoAdapter);
-    }
-
-    private void setupMovieRepository() {
-        movieRepository = ((DataManager) getApplication()).getMovieRepository();
     }
 
     private void setupToolbar() {

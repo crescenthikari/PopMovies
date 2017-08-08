@@ -62,9 +62,16 @@ dependencies {
 
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
 
-    compile "com.google.dagger:dagger-android:$daggerVersion"
-    compile "com.google.dagger:dagger-android-support:$daggerVersion"
+    // dagger core dependencies
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    compile "com.google.dagger:dagger:$daggerVersion"
+
+    // dagger android dependencies
     annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
+    compile "com.google.dagger:dagger-android:$daggerVersion"
+
+    // dagger android support library dependencies
+    compile "com.google.dagger:dagger-android-support:$daggerVersion"
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.code.gson:gson:2.7'
