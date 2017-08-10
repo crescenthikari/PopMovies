@@ -454,6 +454,11 @@ public class MovieDetailActivity extends AppCompatActivity
                     @Override
                     public void onSuccess(@NonNull Movie movie) {
                         MovieDetailActivity.this.movie = movie;
+                        if (movie.isFavoriteMovie()) {
+                            showFavoriteIcon();
+                        } else {
+                            showFavoriteBorderIcon();
+                        }
                     }
 
                     @Override
