@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import net.crescenthikari.popmovies.R;
 import net.crescenthikari.popmovies.data.model.Movie;
@@ -24,6 +25,7 @@ import net.crescenthikari.popmovies.features.moviedetail.MovieDetailActivity;
 import net.crescenthikari.popmovies.features.movieslist.adapter.MovieCollectionAdapter;
 import net.crescenthikari.popmovies.features.movieslist.contract.OnMovieItemClickCallback;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,6 +60,9 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
 
     @BindView(R.id.movies_list_view)
     RecyclerView moviesListView;
+
+    @BindView(R.id.movies_list_message)
+    TextView errorMessageField;
 
     GridLayoutManager moviesLayoutAdapter;
 
@@ -188,6 +193,16 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
         moviesListView.setVisibility(View.GONE);
     }
 
+    private void showErrorMessage(String errorMessage) {
+        errorMessageField.setText(errorMessage);
+        errorMessageField.setVisibility(View.VISIBLE);
+    }
+
+    private void hideErrorMessage() {
+        errorMessageField.setText("");
+        errorMessageField.setVisibility(View.GONE);
+    }
+
     private void getNowPlayingMovies() {
         subscribeMovieCollectionResponse(movieRepository.getNowPlayingMovies(1));
     }
@@ -210,6 +225,7 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
 
     private void subscribeMovieCollectionResponse(Observable<List<Movie>> observable) {
         hideMovieList();
+        hideErrorMessage();
         showProgress();
         if (disposables.size() == 1 && lastDisposable != null) {
             lastDisposable.dispose();
@@ -227,7 +243,10 @@ public class MoviesListActivity extends AppCompatActivity implements OnMovieItem
                     public void accept(@io.reactivex.annotations.NonNull Throwable throwable)
                             throws Exception {
                         Log.e(TAG, "accept: " + throwable.getMessage());
-                        // do nothing
+                        hideProgress();
+                        if (throwable instanceof IOException) {
+                            showErrorMessage(getString(R.string.network_error_message));
+                        }
                     }
                 }, new Action() {
                     @Override

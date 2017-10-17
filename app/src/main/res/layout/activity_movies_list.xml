@@ -45,6 +45,15 @@
                 android:indeterminateOnly="true"
                 android:visibility="gone" />
 
+            <TextView
+                android:id="@+id/movies_list_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:visibility="gone"
+                tools:text="Error message" />
+
         </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView

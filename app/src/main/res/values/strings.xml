@@ -11,4 +11,5 @@
     <string name="tools_title">Title</string>
     <string name="videos_subhead">Videos</string>
     <string name="reviews_subhead">Reviews</string>
+    <string name="network_error_message">Terjadi gangguan koneksi dengan peladen API TheMovieDB. Silakan coba kembali.</string>
 </resources>
